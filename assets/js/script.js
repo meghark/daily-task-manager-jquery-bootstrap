@@ -1,5 +1,5 @@
 //Check for weekend
-var startHour = 21;
+var startHour = 9;
 var workHours =8;
 
 //This variable will be used by a timer to check if hour has passed
