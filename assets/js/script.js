@@ -54,15 +54,16 @@ var setColor = function(){
        var dt = new Date(eventDate);
        var hour = dt.getHours();
 
-       var currentDate = new Date();
-       var day = today.getDate();
-       var month = today.getMonth();
-       var year = today.getFullYear();
+       var newDate = new Date();
+       var day = newDate.getDate();
+       var month = newDate.getMonth();
+       var year = newDate.getFullYear();
+       var hrs = newDate.getHours();
+
+       var currentDate = new Date(year, month+1,day );
+       currentDate.setHours(hrs,0,0);
        var chour = currentDate.getHours();
-       //console.log("EventDate " + eventDate);
-       //console.log("CurrentHour " +chour); 
-       //console.log("Hour " +hour);
-    
+           
         if(eventDate < currentDate)
        {
            //console.log("setting to grey");
@@ -70,14 +71,14 @@ var setColor = function(){
            $(this).removeClass("bg-success");
            $(this).addClass("bg-secondary");
        }
-       else if (hour == chour)
+       else if (eventDate == currentDate)
        {
         //console.log("setting to red");
             $(this).removeClass("bg-secondary");
             $(this).removeClass("bg-success");
             $(this).addClass("bg-danger");
        }
-       else if (hour > chour)
+       else if (eventDate > currentDate)
        {
         //console.log("setting to green");
             $(this).removeClass("bg-danger");
