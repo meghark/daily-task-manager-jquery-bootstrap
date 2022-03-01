@@ -11,6 +11,7 @@ const year = today.getFullYear();
 var startWork = new Date(year, month+1,day );
 startWork.setHours(21,0,0);
 
+//This variable will be used by a timer to check if hour has passed
 var timerReferenceDate =new Date();
 
 var printDay = function(){
@@ -30,7 +31,7 @@ var printDay = function(){
         var divTimeEl = $("<div>").addClass("col-1 border border-left-0 border-dark").text(hourDisplay);
 
         //For each row a textarea is available to enter task for the hour.
-        var divEventEl = $("<textArea>").addClass("col-10 border evnt list-group-item-secondary");
+        var divEventEl = $("<textArea>").addClass("col-10 border evnt  bg-secondary");
         divEventEl.attr("dat-date", startWork );
 
         //Save option available at each row. A save icon is used for the row.
@@ -51,8 +52,7 @@ var printDay = function(){
 var setColor = function(){
     $(".evnt").each(function(i, obj) {
        var eventDate= $(this).attr("dat-date");
-       var dt = new Date(eventDate);
-       var hour = dt.getHours();
+       var dtEvent = new Date(eventDate);      
 
        var newDate = new Date();
        var day = newDate.getDate();
@@ -62,30 +62,87 @@ var setColor = function(){
 
        var currentDate = new Date(year, month+1,day );
        currentDate.setHours(hrs,0,0);
-       var chour = currentDate.getHours();
-           
-        if(eventDate < currentDate)
+        console.log("event", eventDate);
+        console.log("current", currentDate);
+        if(dtEvent < currentDate)
        {
-           //console.log("setting to grey");
+           console.log("setting to grey");
            $(this).removeClass("bg-danger");
            $(this).removeClass("bg-success");
            $(this).addClass("bg-secondary");
        }
-       else if (eventDate == currentDate)
+       else if (dtEvent > currentDate)
        {
-        //console.log("setting to red");
-            $(this).removeClass("bg-secondary");
-            $(this).removeClass("bg-success");
-            $(this).addClass("bg-danger");
-       }
-       else if (eventDate > currentDate)
-       {
-        //console.log("setting to green");
+            console.log("setting to green");
             $(this).removeClass("bg-danger");
             $(this).removeClass("bg-secondary");
             $(this).addClass("bg-success");
-       }       
+       }  
+       else{
+        console.log("setting to red");
+        $(this).removeClass("bg-secondary");
+        $(this).removeClass("bg-success");
+        $(this).addClass("bg-danger");
+       }     
     }); 
 }
 
+var timer = setInterval(function(){
+    //Paint the page only if the hour has passed. 
+    //When page loads save a reference date. Keep updating it as hour passes.
+    var currentDate = new Date();
+
+    var currentHour = currentDate.getHours();
+    var referHour = timerReferenceDate.getHours();
+    //console.log("Running timer");
+    if(currentHour != referHour)
+    {
+        //console.log("running color change")
+        setColor();
+        timerReferenceDate = currentDate;
+    }   
+
+} ,5000);
+
+var saveRecord = function(event) {
+    var taskText = $(this).siblings('textarea').val();
+    var taskDate = $(this).siblings('textarea').attr("dat-date");
+    var taskObj = {
+        txt : taskText,
+        dt : taskDate
+    };
+
+    //To handle the case where a user deletes a previously saved note. 
+    //The following code runs without checking if user entered a text.
+    var tasks = JSON.parse(localStorage.getItem("tasks"));
+    if(!tasks)
+    {
+        tasks=[];
+    }
+
+    tasks.push(taskObj);
+    localStorage.setItem("tasks", JSON.stringify(tasks));   
+}
+
+var saveRecord = function(event) {
+    var taskText = $(this).siblings('textarea').val();
+    var taskDate = $(this).siblings('textarea').attr("dat-date");
+    var taskObj = {
+        txt : taskText,
+        dt : taskDate
+    };
+
+    //To handle the case where a user deletes a previously saved note. 
+    //The following code runs without checking if user entered a text.
+    var tasks = JSON.parse(localStorage.getItem("tasks"));
+    if(!tasks)
+    {
+        tasks=[];
+    }
+
+    tasks.push(taskObj);
+    localStorage.setItem("tasks", JSON.stringify(tasks));   
+}
+
 printDay();
+$(".container").on("click",".saveChanges",saveRecord);
