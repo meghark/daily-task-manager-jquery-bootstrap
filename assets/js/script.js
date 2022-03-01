@@ -1,4 +1,4 @@
-
+//Check for weekend
 var startHour = 21;
 var workHours =8;
 
