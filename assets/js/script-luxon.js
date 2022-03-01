@@ -8,7 +8,7 @@ var timerReferenceDate =new Date();
 var printDay = function(){
     const today =  DateTime.now();
     var startWork = today.toLocaleString(DateTime.DATE_SHORT);
-    startWork.setHours(startHour,0,0);
+    startWork.set({hour: startHour});
 
     var containerEl = $(".container");
     // Show todays date in header in the format day, month, and date.
@@ -66,8 +66,8 @@ var setColor = function(){
        const newDate = DateTime.now();
        var hrs = newDate.getHours();
 
-       var currentDate = newDate.toLocaleString(DateTime.DATE_SHORT);;
-       currentDate.setHours(hrs,0,0);
+       var currentDate = newDate.toLocaleString(DateTime.DATE_SHORT);
+       currentDate.set({hour: hrs});     
         //console.log("event", eventDate);
         //console.log("current", currentDate);
         if(dtEvent < currentDate)
