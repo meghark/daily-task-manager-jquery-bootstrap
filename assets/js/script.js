@@ -1,20 +1,18 @@
 
-var startHour = 9;
-var endHour = 17;
+var startHour = 21;
 var workHours =8;
-
-var today = new Date();
-console.log(today);
-const day = today.getDate();
-const month = today.getMonth();
-const year = today.getFullYear();
-var startWork = new Date(year, month+1,day );
-startWork.setHours(21,0,0);
 
 //This variable will be used by a timer to check if hour has passed
 var timerReferenceDate =new Date();
 
 var printDay = function(){
+    var today = new Date();
+    const day = today.getDate();
+    const month = today.getMonth();
+    const year = today.getFullYear();
+    var startWork = new Date(year, month+1,day );
+    startWork.setHours(startHour,0,0);
+
     var containerEl = $(".container");
     // Show todays date in header in the format day, month, and date.
     var showDate = today.toLocaleString('default',{weekday: "long"})+', '
@@ -46,7 +44,22 @@ var printDay = function(){
         //Move time ahead by 1 hour, to print next row.
         startWork.setHours(startWork.getHours()+1,0,0);             
     }   
-    setColor();        
+    setColor();   
+    populateTasks();     
+}
+
+var populateTasks = function(){
+    var tasks = JSON.parse(localStorage.getItem("tasks"));    
+    if(tasks)
+    {
+          $(tasks).each(function(i,obj){
+            var textEl = $("textarea[dat-date='"+obj.dt+"']") ;
+            if(textEl)
+            {
+                $(textEl).val(obj.txt);
+            }               
+        })
+    }
 }
 
 var setColor = function(){
@@ -62,24 +75,24 @@ var setColor = function(){
 
        var currentDate = new Date(year, month+1,day );
        currentDate.setHours(hrs,0,0);
-        console.log("event", eventDate);
-        console.log("current", currentDate);
+        //console.log("event", eventDate);
+        //console.log("current", currentDate);
         if(dtEvent < currentDate)
        {
-           console.log("setting to grey");
+           //console.log("setting to grey");
            $(this).removeClass("bg-danger");
            $(this).removeClass("bg-success");
            $(this).addClass("bg-secondary");
        }
        else if (dtEvent > currentDate)
        {
-            console.log("setting to green");
+           //console.log("setting to green");
             $(this).removeClass("bg-danger");
             $(this).removeClass("bg-secondary");
             $(this).addClass("bg-success");
        }  
        else{
-        console.log("setting to red");
+        //console.log("setting to red");
         $(this).removeClass("bg-secondary");
         $(this).removeClass("bg-success");
         $(this).addClass("bg-danger");
@@ -94,14 +107,21 @@ var timer = setInterval(function(){
 
     var currentHour = currentDate.getHours();
     var referHour = timerReferenceDate.getHours();
+
+    var today = currentDate.getDate();
+    var referDate = timerReferenceDate.getDate();
     //console.log("Running timer");
-    if(currentHour != referHour)
+    if(today !=referDate )
+    {
+        printDay;
+        timerReferenceDate = currentDate;
+    }
+    else if(currentHour != referHour)
     {
         //console.log("running color change")
         setColor();
         timerReferenceDate = currentDate;
     }   
-
 } ,5000);
 
 var saveRecord = function(event) {
