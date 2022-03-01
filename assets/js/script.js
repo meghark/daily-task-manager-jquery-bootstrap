@@ -9,7 +9,7 @@ const day = today.getDate();
 const month = today.getMonth();
 const year = today.getFullYear();
 var startWork = new Date(year, month+1,day );
-startWork.setHours(9,0,0);
+startWork.setHours(21,0,0);
 
 var timerReferenceDate =new Date();
 
@@ -44,7 +44,47 @@ var printDay = function(){
         
         //Move time ahead by 1 hour, to print next row.
         startWork.setHours(startWork.getHours()+1,0,0);             
-    }           
+    }   
+    setColor();        
+}
+
+var setColor = function(){
+    $(".evnt").each(function(i, obj) {
+       var eventDate= $(this).attr("dat-date");
+       var dt = new Date(eventDate);
+       var hour = dt.getHours();
+
+       var currentDate = new Date();
+       var day = today.getDate();
+       var month = today.getMonth();
+       var year = today.getFullYear();
+       var chour = currentDate.getHours();
+       //console.log("EventDate " + eventDate);
+       //console.log("CurrentHour " +chour); 
+       //console.log("Hour " +hour);
+    
+        if(eventDate < currentDate)
+       {
+           //console.log("setting to grey");
+           $(this).removeClass("bg-danger");
+           $(this).removeClass("bg-success");
+           $(this).addClass("bg-secondary");
+       }
+       else if (hour == chour)
+       {
+        //console.log("setting to red");
+            $(this).removeClass("bg-secondary");
+            $(this).removeClass("bg-success");
+            $(this).addClass("bg-danger");
+       }
+       else if (hour > chour)
+       {
+        //console.log("setting to green");
+            $(this).removeClass("bg-danger");
+            $(this).removeClass("bg-secondary");
+            $(this).addClass("bg-success");
+       }       
+    }); 
 }
 
 printDay();
