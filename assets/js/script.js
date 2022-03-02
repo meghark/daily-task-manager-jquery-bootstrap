@@ -1,5 +1,5 @@
 //All date operations have been implemented using Javascript date library.
-var startHour = 9;
+var startHour = 21;
 var workHours =8;
 
 //This variable will be used by a timer to check if hour has passed
