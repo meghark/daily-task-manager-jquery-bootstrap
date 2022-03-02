@@ -5,10 +5,10 @@
 The website allows the user to set the schedule for the current work day.
 1. When the user connects to website , they are shown hourly list of tasks.
 2. The user has the option to make changes to the tasks.
-3. The changes are saved only when the user hit save button.
+3. The changes are saved only when the user hits the save button.
 4. Hours in the past are shown as grey, current hour as red, future as green.
 5. The hourly color coding is updated even if the user leaves the page open.
-   Also the overall date is updated when the user submits the page.
+   Also the overall date is updated when the user refreshes the page.
 
 ## Built With
 * Html
