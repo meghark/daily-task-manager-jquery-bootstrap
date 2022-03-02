@@ -1,4 +1,4 @@
-//Check for weekend
+//All date operations have been implemented using Javascript date library.
 var startHour = 21;
 var workHours =8;
 
@@ -29,12 +29,12 @@ var printDay = function(){
         var divTimeEl = $("<div>").addClass("col-1 border border-left-0 border-dark").text(hourDisplay);
 
         //For each row a textarea is available to enter task for the hour.
-        var divEventEl = $("<textArea>").addClass("col-10 border evnt  bg-secondary");
+        var divEventEl = $("<textArea>").addClass("col-10 border evnt  bg-secondary text-white");
         divEventEl.attr("dat-date", startWork );
 
         //Save option available at each row. A save icon is used for the row.
         var divBtnEl =  $("<div>").addClass("col-1 border saveChanges rounded-left text-center bg-info text-white");
-        var btnIconEl = $("<i>").addClass("fa fa-save fa-2x mt-4");
+        var btnIconEl = $("<i>").addClass("fa fa-save fa-2x mt-4");  
         divBtnEl.append(btnIconEl);
         divRowEl.append(divTimeEl, divEventEl, divBtnEl);
 
